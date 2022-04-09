@@ -32,58 +32,62 @@ export default function Header() {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <span className="flex justify-between">
-                <Link href="/">
-                  <a>Home</a>
-                </Link>
-                <FontAwesomeIcon icon={faHome} size="lg" />
-              </span>
+              <Link href="/">
+                <a className="flex justify-between w-full mb-1 py-2">
+                  <span>Home</span>
+                  <FontAwesomeIcon icon={faHome} size="lg" />
+                </a>
+              </Link>
             </li>
             <li>
-              <span className="flex justify-between">
-                <Link href="/main">
-                  <a>View Main Map</a>
-                </Link>
-                <FontAwesomeIcon icon={faMapLocationDot} size="lg" />
-              </span>
+              <Link href="/main">
+                <a className="flex justify-between w-full mb-1 py-2">
+                  <span>View Main Map</span>
+                  <FontAwesomeIcon icon={faMapLocationDot} size="lg" />
+                </a>
+              </Link>
             </li>
             <li>
-              <span className="flex justify-between">
-                <Link href="/about">
-                  <a>About Project</a>
-                </Link>
-                <FontAwesomeIcon icon={faCircleInfo} size="lg" />
-              </span>
+              <Link href="/about">
+                <a className="flex justify-between w-full py-2">
+                  <span>About Project</span>
+                  <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+                </a>
+              </Link>
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">Ukraine Aid</a>
+        <Link href="/">
+          <a className="btn btn-ghost normal-case text-xl">
+            Ukraine Aid Tracker
+          </a>
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal p-0">
           <li>
-            <span className="flex justify-between">
-              <Link href="/">
-                <a>Home</a>
-              </Link>
-              <FontAwesomeIcon icon={faHome} size="lg" />
-            </span>
+            <Link href="/">
+              <a className="flex justify-between w-full mr-1">
+                <span>Home</span>
+                <FontAwesomeIcon icon={faHome} size="lg" />
+              </a>
+            </Link>
           </li>
           <li>
-            <span className="flex justify-between">
-              <Link href="/main">
-                <a>View Main Map</a>
-              </Link>
-              <FontAwesomeIcon icon={faMapLocationDot} size="lg" />
-            </span>
+            <Link href="/main">
+              <a className="flex justify-between w-full mr-1">
+                <span>View Main Map</span>
+                <FontAwesomeIcon icon={faMapLocationDot} size="lg" />
+              </a>
+            </Link>
           </li>
           <li>
-            <span className="flex justify-between">
-              <Link href="/about">
-                <a>About Project</a>
-              </Link>
-              <FontAwesomeIcon icon={faCircleInfo} size="lg" />
-            </span>
+            <Link href="/about">
+              <a className="flex justify-between w-full mr-1">
+                <span>About Project</span>
+                <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+              </a>
+            </Link>
           </li>
         </ul>
       </div>
