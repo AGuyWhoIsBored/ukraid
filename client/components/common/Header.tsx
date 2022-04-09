@@ -8,6 +8,8 @@ import {
   faCircleInfo,
   faHeartPulse,
 } from "@fortawesome/free-solid-svg-icons";
+import ukraineFlag from "../../../public/ukrflag.png";
+import Image from "next/image";
 
 export default function Header() {
   return (
@@ -75,11 +77,19 @@ export default function Header() {
         <Link href="/">
           <a className="btn btn-ghost normal-case text-xl flex justify-between">
             <span>Ukraine Aid Tracker</span>
-            <FontAwesomeIcon
-              icon={faHeartPulse}
-              size="lg"
-              className="text-red-500 ml-2"
-            />
+            <span className="ml-4">
+              <Image
+                src={ukraineFlag}
+                width={25}
+                height={25}
+                alt="ukraine flag"
+              />
+              <FontAwesomeIcon
+                icon={faHeartPulse}
+                size="lg"
+                className="text-red-500"
+              />
+            </span>
           </a>
         </Link>
       </div>
