@@ -1,10 +1,15 @@
 import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
   faMapLocationDot,
   faCircleInfo,
+  faHeartPulse,
 } from "@fortawesome/free-solid-svg-icons";
+import ukraineFlag from "../../../public/ukrflag.png";
+import Image from "next/image";
 
 export default function Header() {
   return (
@@ -35,7 +40,11 @@ export default function Header() {
               <Link href="/">
                 <a className="flex justify-between w-full mb-1 py-2">
                   <span>Home</span>
-                  <FontAwesomeIcon icon={faHome} size="lg" />
+                  <FontAwesomeIcon
+                    icon={faHome}
+                    size="lg"
+                    className="text-emerald-500"
+                  />
                 </a>
               </Link>
             </li>
@@ -43,7 +52,11 @@ export default function Header() {
               <Link href="/main">
                 <a className="flex justify-between w-full mb-1 py-2">
                   <span>View Main Map</span>
-                  <FontAwesomeIcon icon={faMapLocationDot} size="lg" />
+                  <FontAwesomeIcon
+                    icon={faMapLocationDot}
+                    size="lg"
+                    className="text-amber-500"
+                  />
                 </a>
               </Link>
             </li>
@@ -51,15 +64,32 @@ export default function Header() {
               <Link href="/about">
                 <a className="flex justify-between w-full py-2">
                   <span>About Project</span>
-                  <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+                  <FontAwesomeIcon
+                    icon={faCircleInfo}
+                    size="lg"
+                    className="text-blue-500"
+                  />
                 </a>
               </Link>
             </li>
           </ul>
         </div>
         <Link href="/">
-          <a className="btn btn-ghost normal-case text-xl">
-            Ukraine Aid Tracker
+          <a className="btn btn-ghost normal-case text-xl flex justify-between">
+            <span>Ukraine Aid Tracker</span>
+            <span className="ml-4">
+              <Image
+                src={ukraineFlag}
+                width={25}
+                height={25}
+                alt="ukraine flag"
+              />
+              <FontAwesomeIcon
+                icon={faHeartPulse}
+                size="lg"
+                className="text-red-500"
+              />
+            </span>
           </a>
         </Link>
       </div>
@@ -69,7 +99,11 @@ export default function Header() {
             <Link href="/">
               <a className="flex justify-between w-full mr-1">
                 <span>Home</span>
-                <FontAwesomeIcon icon={faHome} size="lg" />
+                <FontAwesomeIcon
+                  icon={faHome}
+                  size="lg"
+                  className="text-emerald-500"
+                />
               </a>
             </Link>
           </li>
@@ -77,7 +111,11 @@ export default function Header() {
             <Link href="/main">
               <a className="flex justify-between w-full mr-1">
                 <span>View Main Map</span>
-                <FontAwesomeIcon icon={faMapLocationDot} size="lg" />
+                <FontAwesomeIcon
+                  icon={faMapLocationDot}
+                  size="lg"
+                  className="text-amber-500"
+                />
               </a>
             </Link>
           </li>
@@ -85,15 +123,21 @@ export default function Header() {
             <Link href="/about">
               <a className="flex justify-between w-full mr-1">
                 <span>About Project</span>
-                <FontAwesomeIcon icon={faCircleInfo} size="lg" />
+                <FontAwesomeIcon
+                  icon={faCircleInfo}
+                  size="lg"
+                  className="text-blue-500"
+                />
               </a>
             </Link>
           </li>
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn btn-ghost mr-3">Sign Up</a>
-        <a className="btn mr-3">Sign In</a>
+        <Link href="/register">
+          <a className="btn btn-ghost mr-3">Sign Up</a>
+        </Link>
+        <button className="btn mr-3 btn-accent text-white" onClick={() => signIn()}>Sign in</button>
       </div>
     </div>
   );
