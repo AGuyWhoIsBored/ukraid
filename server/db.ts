@@ -39,7 +39,47 @@ export async function deleteUser(uid: string) {
   return uid; 
 }
 
-export async function checkUser(uid: string) {
+export async function checkPassword(uid: string) {
+  let user: User | null = null;
+  try{
+    const results = (await conPool.execute(
+      "Select from users WHERE Id = ?",
+      [uid])) as [RowDataPacket[], FieldPacket[]];
+    console.log(results)
+    user = {
+      Email: results[0][0].Email,
+      Id: results[0][0].Id,
+      Password: results[0][0].Password,
+      UserName: results[0][0].UserName
+    }
+  }
+  catch(e){
+    console.error(e)
+  }
+  return user?.Password
+}
+
+
+export async function checkUser(userName: string) {
+  let user: User | null = null;
+  try{
+    const results = (await conPool.execute(
+      "Select from users WHERE UserName = ?",
+      [userName])) as [RowDataPacket[], FieldPacket[]];
+    console.log(results)
+    user = {
+      Email: results[0][0].Email,
+      Id: results[0][0].Id,
+      UserName: results[0][0].UserName
+    }
+  }
+  catch(e){
+    console.error(e)
+  }
+  return user
+}
+
+export async function getUser(uid: string) {
   let user: User | null = null;
   try{
     const results = (await conPool.execute(
@@ -86,7 +126,7 @@ export async function deletePost(id: string) {
   return id; 
 }
 
-export async function checkPost(id: string) {
+export async function getPost(id: string) {
   let post: Post | null = null;
   try{
     const results = (await conPool.execute(
