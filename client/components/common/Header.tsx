@@ -12,6 +12,7 @@ import ukraineFlag from "../../../public/ukrflag.png";
 import Image from "next/image";
 
 export default function Header() {
+  const {data: session} = useSession();
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -134,10 +135,18 @@ export default function Header() {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link href="/register">
-          <a className="btn btn-ghost mr-3">Sign Up</a>
-        </Link>
-        <button className="btn mr-3 btn-accent text-white" onClick={() => signIn()}>Sign in</button>
+        
+        {session ?
+          <button className="btn mr-3 btn-accent text-white" onClick={() => signOut()}>Sign Out</button>:
+          <button className="btn mr-3 btn-accent text-white" onClick={() => signIn()}>Sign in</button>
+        }
+        {!session ?
+          <Link href="/register">
+            <a className="btn btn-ghost mr-3">Sign Up</a>
+          </Link>
+        
+        : null
+        }
       </div>
     </div>
   );

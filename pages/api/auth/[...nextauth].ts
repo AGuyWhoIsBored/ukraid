@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import * as db from "../../../server/db"
 
 export default NextAuth({
   providers: [
@@ -21,38 +22,45 @@ export default NextAuth({
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-
-        const res = await fetch("/your/endpoint", {
-          method: 'POST',
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" }
-        })
-        const user = await res.json()
-
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user
+        if(credentials === undefined) {
+          return null;
+        } else if (credentials.username == "john" && credentials.password == "password") {
+          return {
+            id: 1,
+            username: "John",
+            email: "johndoe@email.com"
+          };
         }
+        const userProfile = await db.checkUser(credentials.username)
+        
         // Return null if user data could not be retrieved
-        return null
+        if(userProfile == null) {
+          return null;
+        }
+        return userProfile;
       },
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      return true
-    },
-    async redirect({ url, baseUrl }) {
-      return baseUrl
-    },
-    async session({ session, user, token }) {
+    async session({ session, token }) {
+      if(token) {
+        session.id = token.id;
+      }
       return session
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token, user }) {
       if(user) {
         token.id = user.id
       }
       return token
     }
+  },
+  pages: {
+    newUser: '/register'
+  },
+  theme: {
+    colorScheme: "light",
+    brandColor: "00b757",
   }
+
 })
