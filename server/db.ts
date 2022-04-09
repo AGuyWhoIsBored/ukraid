@@ -126,25 +126,29 @@ export async function deletePost(id: string) {
   return id; 
 }
 
-export async function getPost(id: string) {
-  let post: Post | null = null;
+export async function getAllPosts() {
+  let posts: Post[] = [];
+  let i: number;
   try{
     const results = (await conPool.execute(
-      "Select from users WHERE Id = ?",
-      [id])) as [RowDataPacket[], FieldPacket[]];
+      "Select from posts")) as [RowDataPacket[], FieldPacket[]];
     console.log(results)
-    post = {
-      Id: results[0][0].Id,
-      Title: results[0][0].Title,
-      UId: results[0][0].UId,
-      DateOfEvent: results[0][0].DateOfEvent,
-      Latitude: results[0][0].Latitude,
-      Longitude: results[0][0].Longitude,
-      Description: results[0][0].Description,
+    for(i = 0; i < results[0].length; i++) {
+      let currentPost: Post = {
+        Id: results[0][i].Id,
+        Title: results[0][i].Title,
+        UId: results[0][i].UId,
+        DateOfEvent: results[0][i].DateOfEvent,
+        Latitude: results[0][i].Latitude,
+        Longitude: results[0][i].Longitude,
+        Description: results[0][i].Description,
+      }
+      posts.push(currentPost)
     }
   }
   catch(e){
     console.error(e)
   }
-  return post
+  return posts
 }
+
