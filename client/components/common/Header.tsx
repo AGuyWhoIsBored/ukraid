@@ -77,13 +77,7 @@ export default function Header() {
         <Link href="/">
           <a className="btn btn-ghost normal-case text-xl flex justify-between">
             <span>Ukraine Aid Tracker</span>
-            <span className="ml-4">
-              <Image
-                src={ukraineFlag}
-                width={25}
-                height={25}
-                alt="ukraine flag"
-              />
+            <span className="ml-2">
               <FontAwesomeIcon
                 icon={faHeartPulse}
                 size="lg"
@@ -133,11 +127,18 @@ export default function Header() {
           </li>
         </ul>
       </div>
+
+      {/* TODO: sign up and sign in clash with name when width is small */}
       <div className="navbar-end">
         <Link href="/register">
           <a className="btn btn-ghost mr-3">Sign Up</a>
         </Link>
-        <button className="btn mr-3 btn-accent text-white" onClick={() => signIn()}>Sign in</button>
+        <button
+          className="btn mr-3 btn-accent text-white"
+          onClick={() => signIn()}
+        >
+          Sign in
+        </button>
       </div>
     </div>
   );
