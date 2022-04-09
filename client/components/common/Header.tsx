@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
@@ -125,9 +127,7 @@ export default function Header() {
         <Link href="/register">
           <a className="btn btn-ghost mr-3">Sign Up</a>
         </Link>
-        <Link href="/login">
-          <a className="btn mr-3 btn-accent text-white">Sign In</a>
-        </Link>
+        <button className="btn mr-3 btn-accent text-white" onClick={() => signIn()}>Sign in</button>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import * as argon2 from "argon2";
 import type { NextApiRequest, NextApiResponse } from 'next'
-import * as db from "../../server/db"
+import * as db from "../../../server/db"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   //Only POST mothod is accepted
@@ -18,7 +18,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       //Send error response if duplicate user is found
       if (checkExisting) {
           res.status(422).json({ message: 'User already exists' });
-          client.close();
           return;
       }
       //Hash password
