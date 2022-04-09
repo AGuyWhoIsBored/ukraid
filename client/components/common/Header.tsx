@@ -78,13 +78,7 @@ export default function Header() {
         <Link href="/">
           <a className="btn btn-ghost normal-case text-xl flex justify-between">
             <span>Ukraine Aid Tracker</span>
-            <span className="ml-4">
-              <Image
-                src={ukraineFlag}
-                width={25}
-                height={25}
-                alt="ukraine flag"
-              />
+            <span className="ml-2">
               <FontAwesomeIcon
                 icon={faHeartPulse}
                 size="lg"
@@ -134,6 +128,8 @@ export default function Header() {
           </li>
         </ul>
       </div>
+
+      {/* TODO: sign up and sign in clash with name when width is small */}
       <div className="navbar-end">
         
         {session ?
