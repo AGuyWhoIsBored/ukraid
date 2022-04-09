@@ -14,10 +14,15 @@
     "react-dom": "18.0.0"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@fortawesome/react-fontawesome": "^0.1.18",
+    "@heroicons/react": "^1.0.6",
     "@types/node": "17.0.23",
     "@types/react": "18.0.0",
     "@types/react-dom": "18.0.0",
     "autoprefixer": "^10.4.4",
+    "daisyui": "^2.13.6",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.4",
     "postcss": "^8.4.12",
