@@ -21,7 +21,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           return;
       }
       //Hash password
-      const status = await db.addUser(user, email, await argon2.hash(password));
+      const status = await db.addUser(user, await argon2.hash(password), email);
       //Send success response
       res.status(201).json({ message: 'User created'});
     } else {
