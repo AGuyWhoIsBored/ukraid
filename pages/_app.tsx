@@ -11,7 +11,7 @@ config.autoAddCss = false;
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div>
-      <SessionProvider>
+      <SessionProvider session={pageProps.session}>
           <Header />
           <Component {...pageProps} />
       </SessionProvider>
