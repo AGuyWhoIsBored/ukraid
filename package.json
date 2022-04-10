@@ -31,6 +31,7 @@
     "daisyui": "^2.13.6",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.4",
+    "formik": "^2.2.9",
     "google-map-react": "^2.1.10",
     "postcss": "^8.4.12",
     "slohacks-updated-google-maps": "^2.1.11",

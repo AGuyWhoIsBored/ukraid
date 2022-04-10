@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import Header from "../client/components/common/Header";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { SessionProvider } from "next-auth/react";
 
 // get font awesome CSS to work
 config.autoAddCss = false;
@@ -10,9 +11,12 @@ config.autoAddCss = false;
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div>
-      <Header />
-      <Component {...pageProps} />
+      <SessionProvider>
+          <Header />
+          <Component {...pageProps} />
+      </SessionProvider>
     </div>
+
   );
 }
 
