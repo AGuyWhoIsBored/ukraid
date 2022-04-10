@@ -1,6 +1,7 @@
 import * as argon2 from "argon2";
-import type { NextApiRequest, NextApiResponse } from 'next'
-import * as db from "./../../server/db"
+import type { NextApiRequest, NextApiResponse } from 'next';
+import * as db from "./../../server/db";
+import { v4 as uuidv4 } from "uuid";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   //Only POST mothod is accepted
@@ -12,8 +13,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           res.status(422).json({ message: 'Invalid Data' });
           return;
       }
-
-      const status = await db.addPost(UId, Title, DateOfEvent, Latitude, Longitude, Description)
+      const Id = uuidv4();
+      const status = await db.addPost(Id, UId, Title, DateOfEvent, Latitude, Longitude, Description)
       //Send success response
       res.status(201).json({ message: `Post ${status} created`});
     } else if (req.method === 'GET') {
