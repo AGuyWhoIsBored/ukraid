@@ -79,15 +79,24 @@ export async function checkPassword(uid: string) {
   return user?.Password;
 }
 
-export async function checkUser(userName: string) {
+export async function checkUser(userName: string, email: string | null) {
   let user: User | null = null;
   try {
-    const results = (await conPool.execute(
-      "Select * from users WHERE UserName = ?",
-      [userName]
+    let results;
+    if (!email) {
+      results = (await conPool.execute(
+        "Select * from users WHERE UserName = ?",
+        [userName]
+      )) as [RowDataPacket[], FieldPacket[]];
+      console.log(results);
+    }
+    else {
+    results = (await conPool.execute(
+      "Select * from users WHERE UserName = ? or Email = ?",
+      [userName, email]
     )) as [RowDataPacket[], FieldPacket[]];
     console.log(results);
-
+    }
     if (results[0][0]) {
       user = {
         Email: results[0][0].Email,
@@ -121,6 +130,7 @@ export async function getUser(uid: string) {
 }
 
 export async function addPost(
+  id: string,
   uid: string,
   title: string,
   dateOfEvent: Date,
@@ -128,10 +138,16 @@ export async function addPost(
   longitude: string,
   description: string
 ) {
-  const id = uuidv4();
   try {
     const results = await conPool.execute(
-      "INSERT INTO posts (Id, Title, UId, DateOfEvent, Latitude, Longitude, Description) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO posts (Id, Title, UId, DateOfEvent, Latitude, Longitude, Description) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE \
+        Id = VALUES(Id),\
+        Title = VALUES(Title),\
+        UId = VALUES(UId),\
+        DateOfEvent = VALUES(DateOfEvent),\
+        Latitude = VALUES(Latitude),\
+        Logitude = VALUES(Logitude),\
+        Description = VALUES(Description),",
       [id, title, uid, dateOfEvent, latitude, longitude, description]
     );
     console.log(results);

@@ -30,7 +30,7 @@ export default NextAuth({
         if (credentials === undefined) {
           return null;
         }
-        const userProfile = await db.checkUser(credentials.username);
+        const userProfile = await db.checkUser(credentials.username, null);
         if(userProfile) {
           let hashedPass = await db.checkPassword(userProfile.Id);
 

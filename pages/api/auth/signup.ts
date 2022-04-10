@@ -14,7 +14,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
 
       //Send error response if duplicate user is found
-      let userProfile = await db.checkUser(user);
+      let userProfile = await db.checkUser(user, email);
       if (userProfile) {
           res.status(422).json({ message: 'User already exists' });
           return;
