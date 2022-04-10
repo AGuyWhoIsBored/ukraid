@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import {
   faEnvelope,
   faUserTie,
@@ -6,8 +7,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFormik } from "formik";
+import { useState } from "react";
 
 const Register: NextPage = () => {
+  const router = useRouter();
+  const [errorCode, setErrorCode] = useState(0);
+
   const formValidation = (values: {
     email: string;
     username: string;
@@ -52,6 +57,35 @@ const Register: NextPage = () => {
       onSubmit(values.email, values.username, values.password),
   });
 
+  const onSubmit = async (
+    email: string,
+    username: string,
+    password: string
+  ) => {
+    console.log("create account details", email, username, password);
+
+    //POST form values
+    await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user: username,
+        email,
+        password,
+      }),
+    }).then(async (res) => {
+      if (res.status !== 201) {
+        console.log("didnt create account");
+        setErrorCode(res.status);
+      } else {
+        console.log("account successfully created");
+        router.push(`${window.location.origin}/auth/login`);
+      }
+    });
+  };
+
   return (
     <div className="flex justify-center">
       <div className="card shadow sm:w-[500px] md:w-[750px] lg:w-[1000px] mt-10">
@@ -59,6 +93,31 @@ const Register: NextPage = () => {
           <h2 className="card-title font-medium text-3xl">Create Account</h2>
 
           <div className="divider" />
+
+          {errorCode !== 0 ? (
+            <div className="alert alert-error shadow-lg">
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="stroke-current flex-shrink-0 h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>
+                  {errorCode === 422
+                    ? "Username or email already used."
+                    : "An internal error occurred."}
+                </span>
+              </div>
+            </div>
+          ) : null}
 
           <p>Fill out the following information to create an account.</p>
 
@@ -172,24 +231,6 @@ const Register: NextPage = () => {
       </div>
     </div>
   );
-};
-
-const onSubmit = async (email: string, username: string, password: string) => {
-  console.log("create account details", email, username, password);
-
-  //POST form values
-  const data = await fetch("/api/auth/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      user: username,
-      email,
-      password,
-    }),
-  }).then(async (res) => await res.json());
-  console.log(data);
 };
 
 export default Register;
