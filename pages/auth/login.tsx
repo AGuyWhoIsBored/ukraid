@@ -1,14 +1,15 @@
 import { NextPage } from "next";
-import {
-  faEnvelope,
-  faUserTie,
-  faLock,
-} from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
+import { faUserTie, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFormik } from "formik";
-import { signIn } from "next-auth/react";
+import { signIn, SignInResponse } from "next-auth/react";
+import { useState } from "react";
 
 const Register: NextPage = () => {
+  const router = useRouter();
+  const [errorCode, setErrorCode] = useState(0);
+
   const formValidation = (values: { username: string; password: string }) => {
     const errors: {
       username?: string;
@@ -34,6 +35,24 @@ const Register: NextPage = () => {
     onSubmit: (values) => onSubmit(values.username, values.password),
   });
 
+  const onSubmit = async (username: string, password: string) => {
+    console.log("sign in details", username, password);
+
+    // call the sign in function
+    const results = (await signIn("credentials", {
+      username,
+      password,
+      redirect: false,
+    })) as unknown as SignInResponse;
+
+    if (!results.ok) {
+      setErrorCode(results.status);
+    } else {
+      console.log("results", results);
+      router.push(`${window.location.origin}/main`);
+    }
+  };
+
   return (
     <div className="flex justify-center">
       <div className="card shadow sm:w-[500px] md:w-[750px] lg:w-[1000px] mt-10">
@@ -41,6 +60,31 @@ const Register: NextPage = () => {
           <h2 className="card-title font-medium text-3xl">Sign In</h2>
 
           <div className="divider" />
+
+          {errorCode !== 0 ? (
+            <div className="alert alert-error shadow-lg">
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="stroke-current flex-shrink-0 h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>
+                  {errorCode === 401
+                    ? "Incorrect username or password."
+                    : "An internal error occurred."}
+                </span>
+              </div>
+            </div>
+          ) : null}
 
           <form onSubmit={formikHook.handleSubmit}>
             <div className="form-control mt-3">
@@ -103,19 +147,6 @@ const Register: NextPage = () => {
       </div>
     </div>
   );
-};
-
-const onSubmit = async (username: string, password: string) => {
-  console.log("sign in details", username, password);
-
-  // call the sign in function
-  await signIn("credentials", {
-    username,
-    password,
-    // The page where you want to redirect to after a
-    // successful login
-    callbackUrl: `${window.location.origin}/main`,
-  });
 };
 
 export default Register;

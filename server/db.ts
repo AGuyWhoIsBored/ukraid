@@ -4,7 +4,15 @@ import { v4 as uuidv4 } from "uuid";
 import { User } from "../types/userTypes";
 import { Post } from "../types/postTypes";
 
-console.log(`[${process.env["DB_HOST"]}]`);
+// TODO: rewrite DB to initialize ONLY ONCE
+// TODO: validate incorrect PW flows
+// TODO: UI responses in the frontend if 4XX response back
+
+// export let conPool: mysql.Pool = undefined;
+
+// if (conPool) {
+//   console.log('using existing db connection');
+// }
 
 export const conPool = mysql.createPool({
   host: process.env["DB_HOST"],
@@ -54,11 +62,11 @@ export async function deleteUser(uid: string) {
 
 export async function checkPassword(uid: string) {
   let user: User | null = null;
-  try{
-    const results = (await conPool.execute(
-      "Select * from users WHERE Id = ?",
-      [uid])) as [RowDataPacket[], FieldPacket[]];
-    console.log(results)
+  try {
+    const results = (await conPool.execute("Select * from users WHERE Id = ?", [
+      uid,
+    ])) as [RowDataPacket[], FieldPacket[]];
+    console.log(results);
     user = {
       Email: results[0][0].Email,
       Id: results[0][0].Id,
@@ -76,13 +84,17 @@ export async function checkUser(userName: string) {
   try {
     const results = (await conPool.execute(
       "Select * from users WHERE UserName = ?",
-      [userName])) as [RowDataPacket[], FieldPacket[]];
-    console.log(results)
-    user = {
-      Email: results[0][0].Email,
-      Id: results[0][0].Id,
-      UserName: results[0][0].UserName,
-    };
+      [userName]
+    )) as [RowDataPacket[], FieldPacket[]];
+    console.log(results);
+
+    if (results[0][0]) {
+      user = {
+        Email: results[0][0].Email,
+        Id: results[0][0]?.Id,
+        UserName: results[0][0]?.UserName,
+      };
+    }
   } catch (e) {
     console.error(e);
   }
@@ -91,11 +103,11 @@ export async function checkUser(userName: string) {
 
 export async function getUser(uid: string) {
   let user: User | null = null;
-  try{
-    const results = (await conPool.execute(
-      "Select * from users WHERE Id = ?",
-      [uid])) as [RowDataPacket[], FieldPacket[]];
-    console.log(results)
+  try {
+    const results = (await conPool.execute("Select * from users WHERE Id = ?", [
+      uid,
+    ])) as [RowDataPacket[], FieldPacket[]];
+    console.log(results);
     user = {
       Email: results[0][0].Email,
       Id: results[0][0].Id,
@@ -144,11 +156,13 @@ export async function deletePost(id: string) {
 export async function getAllPosts() {
   let posts: Post[] = [];
   let i: number;
-  try{
-    const results = (await conPool.execute(
-      "Select * from posts")) as [RowDataPacket[], FieldPacket[]];
-    console.log(results)
-    for(i = 0; i < results[0].length; i++) {
+  try {
+    const results = (await conPool.execute("Select * from posts")) as [
+      RowDataPacket[],
+      FieldPacket[]
+    ];
+    console.log(results);
+    for (i = 0; i < results[0].length; i++) {
       let currentPost: Post = {
         Id: results[0][i].Id,
         Title: results[0][i].Title,
