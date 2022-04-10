@@ -137,17 +137,20 @@ export default function Header() {
           >
             Sign Out
           </button>
-        ) : [
-          <button
-            className="btn mr-3 btn-accent text-white"
-            onClick={() => signIn()}
-          >
-            Sign in
-          </button>,
-          <Link href="/auth/register">
-            <a className="btn btn-ghost mr-3">Sign Up</a>
-          </Link>
-        ]}
+        ) : (
+          [
+            <button
+              key={1}
+              className="btn mr-3 btn-accent text-white"
+              onClick={() => signIn()}
+            >
+              Sign in
+            </button>,
+            <Link key={2} href="/auth/register">
+              <a className="btn btn-ghost mr-3">Sign Up</a>
+            </Link>,
+          ]
+        )}
       </div>
     </div>
   );
