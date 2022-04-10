@@ -6,12 +6,11 @@ import {
   faHome,
   faMapLocationDot,
   faCircleInfo,
-  faHeartPulse,
 } from "@fortawesome/free-solid-svg-icons";
-import ukraineFlag from "../../../public/ukrflag.png";
 import Image from "next/image";
 
 export default function Header() {
+  const { data: session } = useSession();
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -77,17 +76,12 @@ export default function Header() {
         <Link href="/">
           <a className="btn btn-ghost normal-case text-xl flex justify-between">
             <span>Ukraine Aid Tracker</span>
-            <span className="ml-4">
+            <span className="ml-2 mt-2">
               <Image
-                src={ukraineFlag}
-                width={25}
+                src="/logo.svg"
                 height={25}
-                alt="ukraine flag"
-              />
-              <FontAwesomeIcon
-                icon={faHeartPulse}
-                size="lg"
-                className="text-red-500"
+                width={25}
+                alt="ukraine aid tracker logo"
               />
             </span>
           </a>
@@ -133,11 +127,29 @@ export default function Header() {
           </li>
         </ul>
       </div>
+
+      {/* TODO: sign up and sign in clash with name when width is small */}
       <div className="navbar-end">
-        <Link href="/register">
-          <a className="btn btn-ghost mr-3">Sign Up</a>
-        </Link>
-        <button className="btn mr-3 btn-accent text-white" onClick={() => signIn()}>Sign in</button>
+        {session ? (
+          <button
+            className="btn mr-3 btn-accent text-white"
+            onClick={() => signOut()}
+          >
+            Sign Out
+          </button>
+        ) : (
+          <button
+            className="btn mr-3 btn-accent text-white"
+            onClick={() => signIn()}
+          >
+            Sign in
+          </button>
+        )}
+        {!session ? (
+          <Link href="/auth/register">
+            <a className="btn btn-ghost mr-3">Sign Up</a>
+          </Link>
+        ) : null}
       </div>
     </div>
   );
