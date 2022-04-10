@@ -43,7 +43,7 @@ export async function checkPassword(uid: string) {
   let user: User | null = null;
   try{
     const results = (await conPool.execute(
-      "Select from users WHERE Id = ?",
+      "Select * from users WHERE Id = ?",
       [uid])) as [RowDataPacket[], FieldPacket[]];
     console.log(results)
     user = {
@@ -64,7 +64,7 @@ export async function checkUser(userName: string) {
   let user: User | null = null;
   try{
     const results = (await conPool.execute(
-      "Select from users WHERE UserName = ?",
+      "Select * from users WHERE UserName = ?",
       [userName])) as [RowDataPacket[], FieldPacket[]];
     console.log(results)
     user = {
@@ -83,7 +83,7 @@ export async function getUser(uid: string) {
   let user: User | null = null;
   try{
     const results = (await conPool.execute(
-      "Select from users WHERE Id = ?",
+      "Select * from users WHERE Id = ?",
       [uid])) as [RowDataPacket[], FieldPacket[]];
     console.log(results)
     user = {
@@ -131,7 +131,7 @@ export async function getAllPosts() {
   let i: number;
   try{
     const results = (await conPool.execute(
-      "Select from posts")) as [RowDataPacket[], FieldPacket[]];
+      "Select * from posts")) as [RowDataPacket[], FieldPacket[]];
     console.log(results)
     for(i = 0; i < results[0].length; i++) {
       let currentPost: Post = {
