@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import * as db from "../../../server/db";
+import * as argon2 from "argon2";
 
 export default NextAuth({
   providers: [
@@ -28,23 +29,19 @@ export default NextAuth({
         // (i.e., the request IP address)
         if (credentials === undefined) {
           return null;
-        } else if (
-          credentials.username == "john" &&
-          credentials.password == "password"
-        ) {
-          return {
-            id: 1,
-            username: "John",
-            email: "johndoe@email.com",
-          };
         }
         const userProfile = await db.checkUser(credentials.username);
+        if(userProfile) {
+          let hashedPass = await db.checkPassword(userProfile.Id);
 
-        // Return null if user data could not be retrieved
-        if (userProfile == null) {
-          return null;
+          if(hashedPass && await argon2.verify(hashedPass, credentials.password)){
+            return userProfile;
+          }
+
         }
-        return userProfile;
+        // Return null if user data could not be retrieved
+        return null;
+
       },
     }),
   ],
