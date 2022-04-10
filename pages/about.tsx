@@ -20,7 +20,10 @@ const About: NextPage = () => {
           markers of events or community efforts to help each other is these unprecedented times. Our goal is to help Ukraines
           come together to support and help one another while also raising awareness and directing other people from around the world to 
           donate or offer words of encouragement and love to Ukraine. Everyone is able to traverse the live map to see the events that 
-          are occuring around them, however only verified users can create events and posts on the map.
+          are occuring around them, however only verified users can create events and posts on the map. The other main goal of this webapp
+          is to allow the people or Ukraine to document the tragedies that befalls them soe the world can know the events that are occuring 
+          without any censorship and without the need to reporters to be out on the front lines in places where they may not beable to get 
+          their stories out. 
         </p>
       </div>
       <div className="text-align: center;">
