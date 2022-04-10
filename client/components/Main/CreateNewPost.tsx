@@ -92,6 +92,8 @@ export default function CreateNewPost({
         lat: values.lat,
         lng: values.long,
         txt: values.title,
+        date: values.datetime,
+        desc: values.desc,
       });
     }
   };

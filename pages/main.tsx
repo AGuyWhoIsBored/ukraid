@@ -42,16 +42,22 @@ const UKRAINE = {
 };
 
 const Main: NextPage = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   // marker states
   const [markers, setMarkers] = useState([] as any[]);
   const [selectMarker, setSelectMarker] = useState({
     lat: 48, // random default value
     lng: 31, // random default value
-    txt: "selected",
+    txt: "selected", // title
     id: -1,
+    // not the smartest thing to do, but oh well
+    date: null,
+    desc: null,
   });
+
+  const [clickedMarker, setClickedMarker] = useState(null as any);
+  const [showMarkerInfo, setShowMarkerInfo] = useState(false);
 
   const [expCounter, setExpCounter] = useState(4);
 
@@ -70,6 +76,8 @@ const Main: NextPage = () => {
             lng: parseFloat(marker.Longitude),
             txt: marker.Title,
             id: i,
+            date: new Date(marker.DateOfEvent),
+            desc: marker.Description,
           };
         })
       );
@@ -79,26 +87,35 @@ const Main: NextPage = () => {
 
   const markerClicked = (marker) => {
     console.log("The marker that was clicked is", marker);
-
-    // setCurMarker(marker);
-    // you may do many things with the "marker" object, please see more on tutorial of the library's author:
-    // https://github.com/istarkov/google-map-react/blob/master/API.md#onchildclick-func
-    // Look at their examples and you may have some ideas, you can also have the hover effect on markers, but it's a bit more complicated I think
+    setClickedMarker(marker);
+    setShowMarkerInfo(true);
   };
 
-  const addMarker = ({ lat, lng, txt }) => {
+  const addMarker = ({ lat, lng, txt, date, desc }) => {
     console.log("lat", lat, "long", lng);
 
-    const newMarker = { lat, lng, txt, id: expCounter };
+    const newMarker = {
+      lat,
+      lng,
+      txt,
+      id: expCounter,
+      date,
+      desc,
+    };
     console.log("adding new marker at ", newMarker);
     setMarkers([...markers, newMarker]);
     setExpCounter(expCounter + 1);
   };
 
   const updateSelectMarker = ({ lat, lng }) => {
-    console.log("select marker lat", lat, "long", lng);
-
-    const newMarker = { lat, lng, txt: "selected", id: -1 };
+    const newMarker = {
+      lat,
+      lng,
+      txt: "selected",
+      id: -1,
+      date: null,
+      desc: null,
+    };
     console.log("updating select marker", newMarker);
     setSelectMarker(newMarker);
   };
@@ -122,7 +139,7 @@ const Main: NextPage = () => {
           id={selectMarker.id}
           onChildClick={() => markerClicked(selectMarker)}
         />
-        {markers.map((marker, i) => {
+        {markers.map((marker) => {
           return (
             <AnyReactComponent
               key={marker.id}
@@ -155,6 +172,20 @@ const Main: NextPage = () => {
               />
             </div>
           ) : null}
+        </div>
+      ) : null}
+
+      {showMarkerInfo ? (
+        <div className="z-50 absolute left-8 bottom-8">
+          <ViewPostInfo
+            title={clickedMarker.txt}
+            date={clickedMarker.date}
+            desc={clickedMarker.desc}
+            lat={clickedMarker.lat}
+            long={clickedMarker.lng}
+            key={clickedMarker.id}
+            setShowMarkerInfo={setShowMarkerInfo}
+          />
         </div>
       ) : null}
     </div>

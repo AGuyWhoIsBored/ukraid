@@ -1,94 +1,46 @@
-import {
-  faSignsPost,
-  faCalendarDay,
-  faMapPin,
-  faFileLines,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useField, Formik } from "formik";
 
-export default function ViewPostInfo(props) {
+// TODO ASAP: delete marker support if the user matches
 
-  const formValidation = (values: {
-    title: string;
-    datetime: Date;
-    lat: number;
-    long: number;
-    desc: string;
-  }) => {
-    const errors: {
-      title?: string;
-      datetime?: string;
-      lat?: string;
-      long?: string;
-      desc?: string;
-    } = {};
-
-    if (!values.title) {
-      errors.title = "Required";
-    }
-    if (!values.datetime) {
-      errors.datetime = "Required";
-    }
-    if (!values.lat) {
-      errors.lat = "Required";
-    }
-    if (!values.long) {
-      errors.long = "Required";
-    }
-    if (!values.desc) {
-      errors.desc = "Required";
-    }
-
-    return errors;
-  };
-
+export default function ViewPostInfo({
+  title,
+  date,
+  desc,
+  lat,
+  long,
+  setShowMarkerInfo,
+}) {
   return (
-    <div className="relative">
-      <div className="card shadow">
-        <h2 className="card-title font-medium text-3xl">Create New Marker</h2>
-        <div className="card-body bg-base-100 items-center text-center">
+    <div>
+      <div className="card shadow w-[400px] h-[400px]">
+        <div className="card-body bg-base-100 relative">
+          <span
+            className="absolute top-4 right-4 text-slate-500 hover:cursor-pointer"
+            onClick={() => setShowMarkerInfo(false)}
+          >
+            <FontAwesomeIcon icon={faCircleXmark} size="2x" />
+          </span>
+          <h2 className="card-title font-medium text-3xl">Marker Info</h2>
           <div className="divider py-0 my-0" />
-
-            {(props) => (
-              <form onSubmit={props.handleSubmit}>
-                <div className="form-control">
-                  <label htmlFor="title" className="label">
-                    <span className="label-text">{props.title}</span>
-                  </label>
-                </div>
-
-                <div className="mt-3">
-                  <label htmlFor="datetime" className="label">
-                    <span className="label-text">Posted on {props.date}</span>
-                  </label>
-                </div>
-
-                <div className="mt-3">
-                  <label htmlFor="lat" className="label">
-                    <span className="label-text">{props.lat}</span>
-                  </label>
-                </div>
-
-                <div className="mt-3">
-                  <label htmlFor="long" className="label">
-                    <span className="label-text">{props.lng}</span>
-                  </label>
-                  <label className="input-group">
-                    <span>
-                      <FontAwesomeIcon icon={faMapPin} />
-                    </span>
-                  </label>
-                </div>
-
-                <div className="form-control mt-3">
-                  <label htmlFor="desc" className="label">
-                    <span className="label-text">{props.content}</span>
-                  </label>
-            
-                </div>
-              </form>
-            )}
+          <h3 className="flex justify-between">
+            <span className="font-semibold">Title:</span>
+            <span>{title}</span>
+          </h3>
+          <h3 className="flex justify-between">
+            <span className="font-semibold">Date:</span>
+            <span>{date?.toLocaleString()}</span>
+          </h3>
+          <h3 className="flex justify-between">
+            <span className="font-semibold">Latitude:</span>
+            <span>{lat}</span>
+          </h3>
+          <h3 className="flex justify-between">
+            <span className="font-semibold">Longitude:</span>
+            <span>{long}</span>
+          </h3>
+          <h3 className="font-semibold">Description:</h3>
+          <p className="whitespace-pre-wrap">{desc}</p>
         </div>
       </div>
     </div>
