@@ -27,7 +27,13 @@ const DatePickerField = ({ ...props }) => {
   );
 };
 
-export default function CreateNewPost({ user, updateSelectMarker, lat, long }) {
+export default function CreateNewPost({
+  user,
+  updateSelectMarker,
+  lat,
+  long,
+  addMarker,
+}) {
   console.log("lat", lat, "long", long);
 
   const formValidation = (values: {
@@ -82,9 +88,10 @@ export default function CreateNewPost({ user, updateSelectMarker, lat, long }) {
 
     if (res === 201) {
       // add to the frontend state with markers
-      updateSelectMarker({
+      addMarker({
         lat: values.lat,
         lng: values.long,
+        txt: values.title,
       });
     }
   };
