@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useSession } from "next-auth/react";
 import CreateNewPost from "../client/components/Main/CreateNewPost";
+import ViewPostInfo from "../client/components/Main/ViewPostInfo";
 import { arrayBuffer } from "stream/consumers";
 
 const AnyReactComponent = ({ text, onChildClick }) => (
@@ -43,10 +44,14 @@ const Main: NextPage = () => {
     { lat: -30, lng: 175, txt: "hijk", id: 2 },
     { lat: -35, lng: 180, txt: "jijkjk", id: 3 },
   ]);
+
+  const [curMarker, setCurMarker] = useState({lat: -37.06, lng: 174.58, txt: "asdf", id: 1});
   const [expCounter, setExpCounter] = useState(4);
 
   const markerClicked = (marker) => {
     console.log("The marker that was clicked is", marker);
+    
+    setCurMarker(marker);
     // you may do many things with the "marker" object, please see more on tutorial of the library's author:
     // https://github.com/istarkov/google-map-react/blob/master/API.md#onchildclick-func
     // Look at their examples and you may have some ideas, you can also have the hover effect on markers, but it's a bit more complicated I think
