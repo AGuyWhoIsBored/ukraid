@@ -141,12 +141,11 @@ export async function addPost(
   try {
     const results = await conPool.execute(
       "INSERT INTO posts (Id, Title, UId, DateOfEvent, Latitude, Longitude, Description) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE \
-        Id = VALUES(Id),\
         Title = VALUES(Title),\
         UId = VALUES(UId),\
         DateOfEvent = VALUES(DateOfEvent),\
         Latitude = VALUES(Latitude),\
-        Logitude = VALUES(Logitude),\
+        Longitude = VALUES(Longitude),\
         Description = VALUES(Description),",
       [id, title, uid, dateOfEvent, latitude, longitude, description]
     );
