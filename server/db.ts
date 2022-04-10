@@ -79,15 +79,24 @@ export async function checkPassword(uid: string) {
   return user?.Password;
 }
 
-export async function checkUser(userName: string, email: string) {
+export async function checkUser(userName: string, email: string | null) {
   let user: User | null = null;
   try {
-    const results = (await conPool.execute(
+    let results;
+    if (!email) {
+      results = (await conPool.execute(
+        "Select * from users WHERE UserName = ?",
+        [userName]
+      )) as [RowDataPacket[], FieldPacket[]];
+      console.log(results);
+    }
+    else {
+    results = (await conPool.execute(
       "Select * from users WHERE UserName = ? or Email = ?",
       [userName, email]
     )) as [RowDataPacket[], FieldPacket[]];
     console.log(results);
-
+    }
     if (results[0][0]) {
       user = {
         Email: results[0][0].Email,
