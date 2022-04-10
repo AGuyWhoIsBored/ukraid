@@ -4,7 +4,7 @@ import * as db from "../../../server/db"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   //Only POST mothod is accepted
-  if (req.method === 'POST') {
+  if (req.method === 'POST') { 
       //Getting email and password from body
       const {user, password, email} = await req.body;
       //Validate

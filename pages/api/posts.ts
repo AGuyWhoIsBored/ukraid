@@ -6,24 +6,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   //Only POST mothod is accepted
   if (req.method === 'POST') {
       //Getting email and password from body
-      const {user, password, email} = await req.body;
+      const {Title, UId, DateOfEvent, Latitude, Longitude, Description} = await req.body;
       //Validate
-      if (!user || !email || !email.includes('@') || !password) {
+      if (!Title || !UId || !DateOfEvent || !Latitude || !Longitude || !Description) {
           res.status(422).json({ message: 'Invalid Data' });
           return;
       }
 
-      //Send error response if duplicate user is found
-      let userProfile = await db.checkUser(user);
-      if (userProfile) {
-          res.status(422).json({ message: 'User already exists' });
-          return;
-      }
-
-      //Hash password
-      const status = await db.addUser(user, await argon2.hash(password), email);
+      const status = await db.addPost(UId, Title, DateOfEvent, Latitude, Longitude, Description)
       //Send success response
-      res.status(201).json({ message: `User ${status} created`});
+      res.status(201).json({ message: `Post ${status} created`});
+    } else if (req.method === 'GET') {
+        const status = await db.getAllPosts();
+        return status;
     } else {
       //Response for other than POST method
       res.status(500).json({ message: 'Route not valid' });
