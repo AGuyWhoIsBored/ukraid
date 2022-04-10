@@ -5,14 +5,6 @@ import { User } from "../types/userTypes";
 import { Post } from "../types/postTypes";
 
 // TODO: rewrite DB to initialize ONLY ONCE
-// TODO: validate incorrect PW flows
-// TODO: UI responses in the frontend if 4XX response back
-
-// export let conPool: mysql.Pool = undefined;
-
-// if (conPool) {
-//   console.log('using existing db connection');
-// }
 
 export const conPool = mysql.createPool({
   host: process.env["DB_HOST"],
@@ -41,7 +33,7 @@ export async function addUser(
       "INSERT INTO users (Id, UserName, Password, Email) VALUES (?, ?, ?, ?)",
       [uid, username, password, email]
     );
-    console.log(results);
+    // console.log(results);
   } catch (e) {
     console.error(e);
   }
@@ -53,7 +45,7 @@ export async function deleteUser(uid: string) {
     const results = await conPool.execute("DELETE from users WHERE Id = ?", [
       uid,
     ]);
-    console.log(results);
+    // console.log(results);
   } catch (e) {
     console.error(e);
   }
@@ -66,7 +58,7 @@ export async function checkPassword(uid: string) {
     const results = (await conPool.execute("Select * from users WHERE Id = ?", [
       uid,
     ])) as [RowDataPacket[], FieldPacket[]];
-    console.log(results);
+    // console.log(results);
     user = {
       Email: results[0][0].Email,
       Id: results[0][0].Id,
@@ -88,13 +80,13 @@ export async function checkUser(userName: string, email: string | null) {
         "Select * from users WHERE UserName = ?",
         [userName]
       )) as [RowDataPacket[], FieldPacket[]];
-      console.log(results);
+      // console.log(results);
     } else {
       results = (await conPool.execute(
         "Select * from users WHERE UserName = ? or Email = ?",
         [userName, email]
       )) as [RowDataPacket[], FieldPacket[]];
-      console.log(results);
+      // console.log(results);
     }
     if (results[0][0]) {
       user = {
@@ -115,7 +107,7 @@ export async function getUser(uid: string) {
     const results = (await conPool.execute("Select * from users WHERE Id = ?", [
       uid,
     ])) as [RowDataPacket[], FieldPacket[]];
-    console.log(results);
+    // console.log(results);
     user = {
       Email: results[0][0].Email,
       Id: results[0][0].Id,
@@ -148,7 +140,7 @@ export async function addPost(
         Description = VALUES(Description)",
       [id, title, uid, dateOfEvent, latitude, longitude, description]
     );
-    console.log(results);
+    // console.log(results);
   } catch (e) {
     console.error(e);
   }
@@ -160,7 +152,7 @@ export async function deletePost(id: string) {
     const results = await conPool.execute("DELETE from posts WHERE Id = ?", [
       id,
     ]);
-    console.log(results);
+    // console.log(results);
   } catch (e) {
     console.error(e);
   }
@@ -175,7 +167,7 @@ export async function getAllPosts() {
       RowDataPacket[],
       FieldPacket[]
     ];
-    console.log(results);
+    // console.log(results);
     for (i = 0; i < results[0].length; i++) {
       let currentPost: Post = {
         Id: results[0][i].Id,

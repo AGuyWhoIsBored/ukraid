@@ -1,8 +1,6 @@
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// TODO ASAP: delete marker support if the user matches
-
 export default function ViewPostInfo({
   title,
   date,
