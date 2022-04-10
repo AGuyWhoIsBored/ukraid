@@ -1,4 +1,4 @@
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // TODO ASAP: delete marker support if the user matches
@@ -10,16 +10,19 @@ export default function ViewPostInfo({
   lat,
   long,
   setShowMarkerInfo,
+  canDelete,
+  eventID,
+  deleteCallback,
 }) {
   return (
     <div>
-      <div className="card shadow w-[400px] h-[400px]">
+      <div className="card shadow w-[500px] h-[400px] overflow-scroll ">
         <div className="card-body bg-base-100 relative">
           <span
-            className="absolute top-4 right-4 text-slate-500 hover:cursor-pointer"
+            className="absolute top-4 right-6 text-slate-400 hover:cursor-pointer hover:text-slate-500 transition"
             onClick={() => setShowMarkerInfo(false)}
           >
-            <FontAwesomeIcon icon={faCircleXmark} size="2x" />
+            <FontAwesomeIcon icon={faXmark} size="2x" />
           </span>
           <h2 className="card-title font-medium text-3xl">Marker Info</h2>
           <div className="divider py-0 my-0" />
@@ -41,6 +44,15 @@ export default function ViewPostInfo({
           </h3>
           <h3 className="font-semibold">Description:</h3>
           <p className="whitespace-pre-wrap">{desc}</p>
+
+          {canDelete ? (
+            <button
+              className="btn btn-error text-white mt-3"
+              onClick={() => deleteCallback(eventID)}
+            >
+              Delete Marker
+            </button>
+          ) : null}
         </div>
       </div>
     </div>

@@ -54,6 +54,8 @@ const Main: NextPage = () => {
     // not the smartest thing to do, but oh well
     date: null,
     desc: null,
+    eventID: null,
+    userID: null,
   });
 
   const [clickedMarker, setClickedMarker] = useState(null as any);
@@ -78,6 +80,8 @@ const Main: NextPage = () => {
             id: i,
             date: new Date(marker.DateOfEvent),
             desc: marker.Description,
+            eventID: marker.Id,
+            userID: marker.UId,
           };
         })
       );
@@ -91,7 +95,7 @@ const Main: NextPage = () => {
     setShowMarkerInfo(true);
   };
 
-  const addMarker = ({ lat, lng, txt, date, desc }) => {
+  const addMarker = ({ lat, lng, txt, date, desc, eventID }) => {
     console.log("lat", lat, "long", lng);
 
     const newMarker = {
@@ -101,6 +105,8 @@ const Main: NextPage = () => {
       id: expCounter,
       date,
       desc,
+      eventID,
+      userID: session?.id,
     };
     console.log("adding new marker at ", newMarker);
     setMarkers([...markers, newMarker]);
@@ -118,6 +124,20 @@ const Main: NextPage = () => {
     };
     console.log("updating select marker", newMarker);
     setSelectMarker(newMarker);
+  };
+
+  const deleteMarker = async (eventID: string) => {
+    console.log("delete marker with event id", eventID);
+
+    // remove from marker list
+    setClickedMarker(null);
+    setShowMarkerInfo(false);
+    setMarkers(markers.filter((marker) => marker.eventID !== eventID));
+
+    // then persist to db
+    await fetch(`/api/posts?eventID=${eventID}`, {
+      method: "DELETE",
+    });
   };
 
   const [markerOpen, setMarkerOpen] = useState(false);
@@ -139,10 +159,10 @@ const Main: NextPage = () => {
           id={selectMarker.id}
           onChildClick={() => markerClicked(selectMarker)}
         />
-        {markers.map((marker) => {
+        {markers.map((marker, i) => {
           return (
             <AnyReactComponent
-              key={marker.id}
+              key={selectMarker.id + marker.id}
               lat={marker.lat}
               lng={marker.lng}
               text={marker.txt}
@@ -185,6 +205,9 @@ const Main: NextPage = () => {
             long={clickedMarker.lng}
             key={clickedMarker.id}
             setShowMarkerInfo={setShowMarkerInfo}
+            canDelete={clickedMarker.userID === session?.id}
+            eventID={clickedMarker.eventID}
+            deleteCallback={deleteMarker}
           />
         </div>
       ) : null}

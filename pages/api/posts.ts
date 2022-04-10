@@ -6,7 +6,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   //Only POST mothod is accepted
   if (req.method === "POST") {
     //Getting email and password from body
-    const { Title, UId, DateOfEvent, Latitude, Longitude, Description } =
+    const { Id, Title, UId, DateOfEvent, Latitude, Longitude, Description } =
       await req.body;
 
     console.log(
@@ -21,6 +21,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     //Validate
     if (
+      !Id ||
       !Title ||
       !UId ||
       !DateOfEvent ||
@@ -31,7 +32,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       res.status(422).json({ message: "Invalid Data" });
       return;
     }
-    const Id = uuidv4();
     const status = await db.addPost(
       Id,
       UId,
@@ -46,6 +46,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   } else if (req.method === "GET") {
     const status = await db.getAllPosts();
     // send success response
+    res.status(200).json(status);
+  } else if (req.method === "DELETE") {
+    console.log("deleting post with ID", req.query.eventID);
+    const status = await db.deletePost(req.query.eventID);
+
     res.status(200).json(status);
   } else {
     //Response for other than POST method

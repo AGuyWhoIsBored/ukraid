@@ -7,6 +7,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useField, Formik } from "formik";
 import DatePicker from "react-datepicker";
+import { v4 as uuidv4 } from "uuid";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -71,12 +72,15 @@ export default function CreateNewPost({
   };
 
   const onSubmit = async (values, actions) => {
+    const eventID = uuidv4();
+
     const res = await fetch("/api/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        Id: eventID,
         UId: user.id,
         Title: values.title,
         DateOfEvent: values.datetime,
@@ -94,6 +98,7 @@ export default function CreateNewPost({
         txt: values.title,
         date: values.datetime,
         desc: values.desc,
+        eventID,
       });
     }
   };
