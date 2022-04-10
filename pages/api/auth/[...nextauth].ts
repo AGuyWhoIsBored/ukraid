@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { signIn } from 'next-auth/react';
 import * as db from "../../../server/db"
 
 export default NextAuth({
@@ -56,7 +57,8 @@ export default NextAuth({
     }
   },
   pages: {
-    newUser: '/register'
+    newUser: '/auth/register',
+    signIn: '/auth/login'
   },
   theme: {
     colorScheme: "light",
