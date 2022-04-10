@@ -89,13 +89,12 @@ export async function checkUser(userName: string, email: string | null) {
         [userName]
       )) as [RowDataPacket[], FieldPacket[]];
       console.log(results);
-    }
-    else {
-    results = (await conPool.execute(
-      "Select * from users WHERE UserName = ? or Email = ?",
-      [userName, email]
-    )) as [RowDataPacket[], FieldPacket[]];
-    console.log(results);
+    } else {
+      results = (await conPool.execute(
+        "Select * from users WHERE UserName = ? or Email = ?",
+        [userName, email]
+      )) as [RowDataPacket[], FieldPacket[]];
+      console.log(results);
     }
     if (results[0][0]) {
       user = {
@@ -146,7 +145,7 @@ export async function addPost(
         DateOfEvent = VALUES(DateOfEvent),\
         Latitude = VALUES(Latitude),\
         Longitude = VALUES(Longitude),\
-        Description = VALUES(Description),",
+        Description = VALUES(Description)",
       [id, title, uid, dateOfEvent, latitude, longitude, description]
     );
     console.log(results);
