@@ -131,12 +131,17 @@ export default function Header() {
       {/* TODO: sign up and sign in clash with name when width is small */}
       <div className="navbar-end">
         {session ? (
-          <button
-            className="btn mr-3 btn-accent text-white"
-            onClick={() => signOut()}
-          >
-            Sign Out
-          </button>
+          <div className="flex">
+            <h3 className="btn btn-outline mr-3 font-semibold pointer-events-none">
+              Hello, {session.user.name}!
+            </h3>
+            <button
+              className="btn mr-3 btn-accent text-white"
+              onClick={() => signOut()}
+            >
+              Sign Out
+            </button>
+          </div>
         ) : (
           [
             <button
