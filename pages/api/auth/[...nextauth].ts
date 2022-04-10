@@ -35,7 +35,11 @@ export default NextAuth({
           let hashedPass = await db.checkPassword(userProfile.Id);
 
           if(hashedPass && await argon2.verify(hashedPass, credentials.password)){
-            return userProfile;
+            return {
+              id: userProfile.Id,
+              name: userProfile.UserName,
+              email: userProfile.Email,
+            };
           }
 
         }
