@@ -66,7 +66,7 @@ export default function ViewPostInfo(props) {
 
                 <div className="mt-3">
                   <label htmlFor="lat" className="label">
-                    <span className="label-text">{props.lng}</span>
+                    <span className="label-text">{props.lat}</span>
                   </label>
                 </div>
 
