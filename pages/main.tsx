@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useSession } from "next-auth/react";
 import CreateNewPost from "../client/components/Main/CreateNewPost";
+import { arrayBuffer } from "stream/consumers";
 
 const AnyReactComponent = ({ text, onChildClick }) => (
   <div
@@ -56,6 +57,7 @@ const Main: NextPage = () => {
     console.log("adding new marker at ", newMarker);
     setMarkers([...markers, newMarker]);
     setExpCounter(expCounter + 1);
+    
   };
 
   const [markerOpen, setMarkerOpen] = useState(false);
@@ -92,7 +94,10 @@ const Main: NextPage = () => {
           </button>
           {markerOpen ? (
             <div className="absolute right-5 bottom-[10%]">
-              <CreateNewPost />
+              <CreateNewPost 
+                lat={markers.slice(-1)[0].lat}
+                lng={markers.slice(-1)[0].lng}
+              />
             </div>
           ) : null}
         </div>

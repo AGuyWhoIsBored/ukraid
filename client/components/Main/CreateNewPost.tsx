@@ -6,6 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useField, Formik } from "formik";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -27,7 +28,8 @@ const DatePickerField = ({ ...props }) => {
   );
 };
 
-export default function CreateNewPost() {
+export default function CreateNewPost(props) {
+
   const formValidation = (values: {
     title: string;
     datetime: Date;
@@ -74,8 +76,8 @@ export default function CreateNewPost() {
             initialValues={{
               title: "",
               datetime: new Date(),
-              lat: 0,
-              long: 0,
+              lat: props.lat,
+              long: props.lng,
               desc: "",
             }}
             validate={formValidation}
