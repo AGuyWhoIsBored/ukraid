@@ -20,11 +20,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           return;
       }
 
-      //Hash password
-      const status = await db.addUser(user, email, await argon2.hash(password));
+      //Hash password and add user
+      try {
+        const status = await db.addUser(user, email, await argon2.hash(password));
+        
+        //Send success response
+        res.status(201).json({ message: `User ${status} created`});
+      } catch {
+        res.status(422).json({ message: 'Failed to add user' });
+      }
 
-      //Send success response
-      res.status(201).json({ message: `User ${status} created`});
     } else {
       //Response for other than POST method
       res.status(500).json({ message: 'Route not valid' });
