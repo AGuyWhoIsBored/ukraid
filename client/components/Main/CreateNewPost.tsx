@@ -6,7 +6,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useField, Formik } from "formik";
-import { useState } from "react";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -28,7 +27,8 @@ const DatePickerField = ({ ...props }) => {
   );
 };
 
-export default function CreateNewPost(props) {
+export default function CreateNewPost({ user, updateSelectMarker, lat, long }) {
+  console.log("lat", lat, "long", long);
 
   const formValidation = (values: {
     title: string;
@@ -64,6 +64,31 @@ export default function CreateNewPost(props) {
     return errors;
   };
 
+  const onSubmit = async (values, actions) => {
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        UId: user.id,
+        Title: values.title,
+        DateOfEvent: values.datetime,
+        Latitude: values.lat,
+        Longitude: values.long,
+        Description: values.desc,
+      }),
+    }).then((resp) => resp.status);
+
+    if (res === 201) {
+      // add to the frontend state with markers
+      updateSelectMarker({
+        lat: values.lat,
+        lng: values.long,
+      });
+    }
+  };
+
   return (
     <div className="relative">
       <div className="card shadow">
@@ -76,14 +101,12 @@ export default function CreateNewPost(props) {
             initialValues={{
               title: "",
               datetime: new Date(),
-              lat: props.lat,
-              long: props.lng,
+              lat: lat,
+              long: long,
               desc: "",
             }}
             validate={formValidation}
-            onSubmit={(values, actions) => {
-              console.log("values", values);
-            }}
+            onSubmit={onSubmit}
           >
             {(props) => (
               <form onSubmit={props.handleSubmit}>
