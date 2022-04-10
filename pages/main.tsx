@@ -16,17 +16,6 @@ const AnyReactComponent = ({ text, onChildClick }) => (
       alignItems: "center",
       justifyContent: "center",
     }}
-    // style={{
-    //   color: "white",
-    //   background: "grey",
-    //   padding: "15px 10px",
-    //   display: "inline-flex",
-    //   textAlign: "center",
-    //   alignItems: "center",
-    //   justifyContent: "center",
-    //   borderRadius: "100%",
-    //   transform: "translate(-50%, -50%)",
-    // }}
   >
     <FontAwesomeIcon icon={faLocationDot} size="3x" className="text-red-500" />
     <h6 className="font-semibold text-base">{text}</h6>
@@ -69,21 +58,11 @@ const Main: NextPage = () => {
     setExpCounter(expCounter + 1);
   };
 
-  const handleMapOnClick = () => {};
+  const [markerOpen, setMarkerOpen] = useState(false);
 
   return (
     // Important! Always set the container height explicitly
     <div style={{ height: "100vh", width: "100%" }}>
-      {/* <div className="absolute right-0 bottom-[50%] z-50 card w-96 bg-base-100 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title">Card title!</h2>
-          <p>If a dog chews shoes whose shoes does he choose?</p>
-          <div className="card-actions justify-end">
-            <button className="btn btn-primary">Buy Now</button>
-          </div>
-        </div>
-      </div> */}
-
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyBj9uPwBexPUrVp3JHkGDZJUDHfpWveUW4" }}
         defaultCenter={UKRAINE.center}
@@ -103,9 +82,21 @@ const Main: NextPage = () => {
         })}
       </GoogleMapReact>
 
-      <div className="absolute right-5 bottom-[10%] z-50">
-        <CreateNewPost />
-      </div>
+      {session ? (
+        <div className="z-50">
+          <button
+            className="absolute top-[68px] right-16 btn btn-error text-white"
+            onClick={() => setMarkerOpen(!markerOpen)}
+          >
+            {markerOpen ? "Hide Marker Creator" : "Show Marker Creator"}
+          </button>
+          {markerOpen ? (
+            <div className="absolute right-5 bottom-[10%]">
+              <CreateNewPost />
+            </div>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 };
