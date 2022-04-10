@@ -91,8 +91,11 @@ const Main: NextPage = () => {
 
   const markerClicked = (marker) => {
     console.log("The marker that was clicked is", marker);
-    setClickedMarker(marker);
-    setShowMarkerInfo(true);
+
+    if (marker.id !== -1) {
+      setClickedMarker(marker);
+      setShowMarkerInfo(true);
+    }
   };
 
   const addMarker = ({ lat, lng, txt, date, desc, eventID }) => {

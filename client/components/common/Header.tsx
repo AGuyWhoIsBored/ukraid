@@ -75,7 +75,7 @@ export default function Header() {
         </div>
         <Link href="/">
           <a className="btn btn-ghost normal-case text-xl flex justify-between">
-            <span>Ukraine Aid Tracker</span>
+            <span>Ukraine Info Hub</span>
             <span className="ml-2 mt-2">
               <Image
                 src="/logo.svg"
