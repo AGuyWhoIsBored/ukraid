@@ -4,7 +4,7 @@ import * as db from "../../../server/db"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   //Only POST mothod is accepted
-  if (req.method === 'POST') {
+  if (req.method === 'POST') { 
       //Getting email and password from body
       const {user, password, email} = await req.body;
       //Validate
@@ -22,7 +22,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       //Hash password and add user
       try {
-        const status = await db.addUser(user, email, await argon2.hash(password));
+        const status = await db.addUser(user, await argon2.hash(password), email);
         
         //Send success response
         res.status(201).json({ message: `User ${status} created`});
